@@ -11,6 +11,14 @@ module Roar
           
           extend ClassMethods
           include InstanceMethods # otherwise Representable overrides our #to_json.
+
+          def setup_for_json(opts={})
+            opts.each do |key, val| 
+              instance_variable = "@#{key}".to_sym
+              raise "instance variable #{instance_variable} already defined" if instance_variable_defined? instance_variable
+              instance_variable_set instance_variable, val
+            end
+          end
         end
       end
       
